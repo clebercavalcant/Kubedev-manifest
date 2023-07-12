@@ -1,0 +1,8 @@
+apiVersion: v1 
+kind: ConfigMap
+metadata:
+  name: kubenewsdb-configmap
+data:  
+  POSTGRES_DB: kubedevnews
+  POSTGRES_USER: kubedevnews  
+  POSTGRES_PASSWORD: Pg#123

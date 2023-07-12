@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kubenews-db-service
+spec:
+  selector:
+    app: kubenews-db
+  ports:
+    - name: kubenewsport
+      port: 5432
