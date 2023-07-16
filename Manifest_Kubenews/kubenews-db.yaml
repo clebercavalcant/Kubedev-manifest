@@ -16,38 +16,35 @@ spec:
         - name: kubenews-db
           image: postgres:alpine3.18
           imagePullPolicy: "IfNotPresent"
-#          args:
-#          - pg_resetwal
-#          - /var/lib/postgresql/data
-#          - sleep
+          resources:
+            requests:
+              memory: "1Gi"
+              #cpu: "1000m"
+              cpu: "1000m"
+            limits:
+              memory: "2Gi"
+              cpu: "2000m"
           env:
-#          - name: POSTGRES_PASSWORD
-#            valueFrom: 
-#              configMapKeyRef:
-#                name: kubenewsdb-configmap
-#                key: POSTGRES_PASSWORD
-#          - name: POSTGRES_USER
-#            valueFrom: 
-#              configMapKeyRef:
-#                name: kubenewsdb-configmap
-#                key: POSTGRES_USER
-#          - name: POSTGRES_DB
-#            valueFrom: 
-#              configMapKeyRef:
-#                name: kubenewsdb-configmap
-#                key: POSTGRES_DB          
-          - name: POSTGRES_USER
-            value: kubedevnews
           - name: POSTGRES_DB
-            value: kubedevnews
+            valueFrom:
+              secretKeyRef:
+                name: kubenewsdb-secrets
+                key: POSTGRES_DB
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: kubenewsdb-secrets
+                key: POSTGRES_USER
           - name: POSTGRES_PASSWORD
-            value: Pg#12
+            valueFrom:
+              secretKeyRef:
+                name: kubenewsdb-secrets
+                key: POSTGRES_PASSWORD
           volumeMounts:
             - name: postgresdb
               mountPath: /var/lib/postgresql/data              
           ports:
           - containerPort: 5432
-      
       volumes:
       - name: postgresdb
         persistentVolumeClaim:
